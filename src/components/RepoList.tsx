@@ -3,16 +3,18 @@ import { useState, useMemo } from "react";
 import type { GitHubRepo } from "../types/github";
 import { sortRepos, type SortOption } from "../utils/repoSort";
 import RepoCard from "./RepoCard";
+import SortSelect from "./SortSelect";
+import LanguageFilter from "./LanguageFilter";
 
 interface RepoListProps {
   repos: GitHubRepo[];
+  username: string;
 }
 
-function RepoList({ repos }: RepoListProps) {
+function RepoList({ repos, username }: RepoListProps) {
   const [sortBy, setSortBy] = useState<SortOption>("stars");
   const [language, setLanguage] = useState<string>("all");
 
-  // Build the dynamic language list from whatever repos actually have
   const languages = useMemo(() => {
     const unique = new Set<string>();
     repos.forEach((repo) => {
@@ -27,37 +29,16 @@ function RepoList({ repos }: RepoListProps) {
     return sortRepos(filtered, sortBy);
   }, [repos, sortBy, language]);
 
-  function handleSortChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSortBy(e.target.value as SortOption);
-  }
-
-  function handleLanguageChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setLanguage(e.target.value);
-  }
-
   return (
     <div>
       <div className="repo-controls">
-        <select value={sortBy} onChange={handleSortChange}>
-          <option value="stars">Sort by Stars</option>
-          <option value="forks">Sort by Forks</option>
-          <option value="updated">Recently Updated</option>
-          <option value="name">Name</option>
-        </select>
-
-        <select value={language} onChange={handleLanguageChange}>
-          <option value="all">All Languages</option>
-          {languages.map((lang) => (
-            <option key={lang} value={lang}>
-              {lang}
-            </option>
-          ))}
-        </select>
+        <SortSelect value={sortBy} onChange={setSortBy} />
+        <LanguageFilter languages={languages} value={language} onChange={setLanguage} />
       </div>
 
       <div className="repo-grid">
         {filteredAndSorted.map((repo) => (
-          <RepoCard key={repo.id} repo={repo} />
+          <RepoCard key={repo.id} repo={repo} username={username} />
         ))}
       </div>
     </div>
