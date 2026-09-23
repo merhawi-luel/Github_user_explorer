@@ -5,7 +5,7 @@ import type { GitHubUser, ApiState } from "../types/github";
 export function useGitHubUser(username: string): ApiState<GitHubUser> {
   const [state, setState] = useState<ApiState<GitHubUser>>({
     data: null,
-    loading: true,
+    loading: false,
     error: null,
   });
 
