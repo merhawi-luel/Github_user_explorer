@@ -17,7 +17,7 @@ function SearchPage() {
     setInput(e.target.value);
   }
 
-  function handleSelectHistory(username: string) {
+  function handleSelect(username: string) {
     addSearch(username);
     navigate(`/user/${username}`);
   }
@@ -35,10 +35,10 @@ function SearchPage() {
 
       {loading && <p>Searching...</p>}
       {error && <p>{error}</p>}
-      {results && <UserSearchResults results={results} />}
+      {results && <UserSearchResults results={results} onSelect={handleSelect} />}
 
       {!debouncedInput && (
-        <SearchHistory history={history} onSelect={handleSelectHistory} onClear={clearHistory} />
+        <SearchHistory history={history} onSelect={handleSelect} onClear={clearHistory} />
       )}
     </div>
   );
