@@ -1,4 +1,3 @@
-// src/pages/RepoDetail.tsx
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { useGitHubReadme } from "../hooks/useGitHubReadme";
