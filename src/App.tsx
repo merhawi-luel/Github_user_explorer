@@ -1,23 +1,20 @@
-import { useState } from "react";
-import SearchBar from "./components/SearchBar";
-import UserCard from "./components/UserCard";
-import RepoList from "./components/RepoList";
-import { useGitHubUser } from "./hooks/useGitHubUser";
-import { useGitHubRepos } from "./hooks/useGitHubRepos";
+// src/App.tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
+import UserProfile from "./pages/UserProfile";
+import RepoDetail from "./pages/RepoDetail";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  const [username, setUsername] = useState("");
-  const { data: user, loading: userLoading, error: userError } = useGitHubUser(username);
-  const { data: repos, loading: reposLoading } = useGitHubRepos(username);
-
   return (
-    <div>
-      <SearchBar onSearch={setUsername} loading={userLoading} />
-      {userError && <p>{userError}</p>}
-      {user && <UserCard user={user} />}
-      {reposLoading && <p>Loading repos...</p>}
-      {repos && <RepoList repos={repos} />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SearchPage />} />
+        <Route path="/user/:username" element={<UserProfile />} />
+        <Route path="/user/:username/repo/:repoName" element={<RepoDetail />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
