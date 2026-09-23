@@ -36,3 +36,14 @@ export interface ApiState<T> {
   loading: boolean;
   error: string | null;
 }
+export interface GitHubUserSearchResult {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+}
+
+export interface GitHubUserSearchResponse {
+  total_count: number;
+  items: GitHubUserSearchResult[];
+}
