@@ -1,8 +1,12 @@
+import type { GitHubRepo } from "../types/github";
+
+export type SortOption = "stars" | "forks" | "updated" | "name";
+
 export function sortRepos(repos: GitHubRepo[], sortBy: SortOption): GitHubRepo[] {
   const sorted = [...repos];
 
   switch (sortBy) {
-    case "stars":  
+    case "stars":
       return sorted.sort((a, b) => b.stargazers_count - a.stargazers_count);
     case "forks":
       return sorted.sort((a, b) => b.forks_count - a.forks_count);
@@ -13,6 +17,6 @@ export function sortRepos(repos: GitHubRepo[], sortBy: SortOption): GitHubRepo[]
     case "name":
       return sorted.sort((a, b) => a.name.localeCompare(b.name));
     default:
-      return sorted; // fallback: return unsorted copy
+      return sorted; 
   }
 }
