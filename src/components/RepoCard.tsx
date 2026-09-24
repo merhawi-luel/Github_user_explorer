@@ -29,7 +29,6 @@ function RepoCard({ repo, username }: RepoCardProps) {
       <div className="mt-3 flex flex-wrap items-center gap-4 font-mono text-xs text-muted">
         {repo.language && (
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-link" />
             {repo.language}
           </span>
         )}

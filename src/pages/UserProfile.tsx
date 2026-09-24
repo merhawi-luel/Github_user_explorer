@@ -21,7 +21,7 @@ function UserProfile() {
           to="/"
           className="font-mono text-sm text-muted hover:text-link transition-colors"
         >
-          {"<-"} new search
+           new search
         </Link>
 
         {userLoading && (

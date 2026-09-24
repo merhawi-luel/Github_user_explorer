@@ -1,4 +1,3 @@
-// src/components/SortSelect.tsx
 import type { SortOption } from "../utils/repoSort";
 
 interface SortSelectProps {
@@ -12,11 +11,15 @@ function SortSelect({ value, onChange }: SortSelectProps) {
   }
 
   return (
-    <select value={value} onChange={handleChange}>
-      <option value="stars">Sort by Stars</option>
-      <option value="forks">Sort by Forks</option>
-      <option value="updated">Recently Updated</option>
-      <option value="name">Name</option>
+    <select
+      value={value}
+      onChange={handleChange}
+      className="bg-bg border border-white/10 text-fg px-3 py-1.5 outline-none focus:border-accent transition-colors"
+    >
+      <option value="stars">sort: stars</option>
+      <option value="forks">sort: forks</option>
+      <option value="updated">sort: updated</option>
+      <option value="name">sort: name</option>
     </select>
   );
 }

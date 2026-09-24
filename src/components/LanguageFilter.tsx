@@ -1,4 +1,3 @@
-// src/components/LanguageFilter.tsx
 interface LanguageFilterProps {
   languages: string[];
   value: string;
@@ -11,8 +10,12 @@ function LanguageFilter({ languages, value, onChange }: LanguageFilterProps) {
   }
 
   return (
-    <select value={value} onChange={handleChange}>
-      <option value="all">All Languages</option>
+    <select
+      value={value}
+      onChange={handleChange}
+      className="bg-bg border border-white/10 text-fg px-3 py-1.5 outline-none focus:border-accent transition-colors"
+    >
+      <option value="all">all languages</option>
       {languages.map((lang) => (
         <option key={lang} value={lang}>
           {lang}
