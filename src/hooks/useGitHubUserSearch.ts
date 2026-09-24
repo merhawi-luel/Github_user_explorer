@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { GitHubUserSearchResult, GitHubUserSearchResponse, ApiState } from "../types/github";
+import { useRateLimit } from "./useRateLimit";
 
 export function useGitHubUserSearch(query: string): ApiState<GitHubUserSearchResult[]> {
   const [state, setState] = useState<ApiState<GitHubUserSearchResult[]>>({
@@ -7,6 +8,7 @@ export function useGitHubUserSearch(query: string): ApiState<GitHubUserSearchRes
     loading: false,
     error: null,
   });
+  const { updateFromHeaders } = useRateLimit();
 
   useEffect(() => {
     if (!query.trim()) {
@@ -21,6 +23,7 @@ export function useGitHubUserSearch(query: string): ApiState<GitHubUserSearchRes
         const res = await fetch(
           `https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=10`
         );
+        updateFromHeaders(res.headers);
 
         if (!res.ok) {
           setState({ data: null, loading: false, error: "Search failed" });
@@ -35,6 +38,7 @@ export function useGitHubUserSearch(query: string): ApiState<GitHubUserSearchRes
     }
 
     search();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return state;

@@ -1,13 +1,14 @@
-// src/hooks/useGitHubRepos.ts
 import { useState, useEffect } from "react";
 import type { GitHubRepo, ApiState } from "../types/github";
+import { useRateLimit } from "./useRateLimit";
 
 export function useGitHubRepos(username: string): ApiState<GitHubRepo[]> {
   const [state, setState] = useState<ApiState<GitHubRepo[]>>({
     data: null,
-    loading: true,
+    loading: false,
     error: null,
   });
+  const { updateFromHeaders } = useRateLimit();
 
   useEffect(() => {
     if (!username) return;
@@ -19,6 +20,7 @@ export function useGitHubRepos(username: string): ApiState<GitHubRepo[]> {
         const res = await fetch(
           `https://api.github.com/users/${username}/repos?per_page=100`
         );
+        updateFromHeaders(res.headers);
 
         if (!res.ok) {
           setState({ data: null, loading: false, error: "Could not load repositories" });

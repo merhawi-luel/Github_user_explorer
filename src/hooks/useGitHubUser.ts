@@ -1,6 +1,6 @@
-// src/hooks/useGitHubUser.ts
 import { useState, useEffect } from "react";
 import type { GitHubUser, ApiState } from "../types/github";
+import { useRateLimit } from "./useRateLimit";
 
 export function useGitHubUser(username: string): ApiState<GitHubUser> {
   const [state, setState] = useState<ApiState<GitHubUser>>({
@@ -8,6 +8,7 @@ export function useGitHubUser(username: string): ApiState<GitHubUser> {
     loading: false,
     error: null,
   });
+  const { updateFromHeaders } = useRateLimit();
 
   useEffect(() => {
     if (!username) return;
@@ -17,6 +18,7 @@ export function useGitHubUser(username: string): ApiState<GitHubUser> {
 
       try {
         const res = await fetch(`https://api.github.com/users/${username}`);
+        updateFromHeaders(res.headers);
 
         if (!res.ok) {
           setState({ data: null, loading: false, error: "User not found" });

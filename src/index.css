@@ -1,7 +1,8 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --color-bg: #0d0d0d;
+  --color-bg: #0d1117;
   --color-fg: #c9d1d9;
   --color-muted: #8b949e;
   --color-link: #58a6ff;
