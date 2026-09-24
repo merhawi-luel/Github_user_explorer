@@ -20,9 +20,7 @@ function SearchPage() {
   return (
     <div className="min-h-screen bg-bg font-sans px-6 py-16">
       <div className="mx-auto max-w-xl">
-        <h1 className="font-mono text-sm text-muted tracking-tight mb-8">
-          github-user-explorer
-        </h1>
+        
 
         <SearchBar onQueryChange={setQuery} />
 
