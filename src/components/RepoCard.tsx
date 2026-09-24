@@ -1,11 +1,12 @@
-// src/components/RepoCard.tsx
+import { Link } from "react-router-dom";
 import type { GitHubRepo } from "../types/github";
 
 interface RepoCardProps {
   repo: GitHubRepo;
+  username: string;
 }
 
-function RepoCard({ repo }: RepoCardProps) {
+function RepoCard({ repo, username }: RepoCardProps) {
   const updatedDate = new Date(repo.updated_at).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -13,24 +14,37 @@ function RepoCard({ repo }: RepoCardProps) {
   });
 
   return (
-    <div className="repo-card">
-      <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-        <h3>{repo.name}</h3>
-      </a>
+    <div className="border border-white/10 p-5">
+      <Link
+        to={`/user/${username}/repo/${repo.name}`}
+        className="font-mono text-fg hover:text-link transition-colors"
+      >
+        <h3 className="text-base">{repo.name}</h3>
+      </Link>
 
-      {repo.description && <p className="description">{repo.description}</p>}
+      {repo.description && (
+        <p className="mt-2 text-sm text-muted leading-relaxed">{repo.description}</p>
+      )}
 
-      <div className="repo-meta">
-        {repo.language && <span className="language">🔵 {repo.language}</span>}
-        <span>⭐ {repo.stargazers_count}</span>
-        <span>🍴 {repo.forks_count}</span>
-        <span>Updated {updatedDate}</span>
+      <div className="mt-3 flex flex-wrap items-center gap-4 font-mono text-xs text-muted">
+        {repo.language && (
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-link" />
+            {repo.language}
+          </span>
+        )}
+        <span className="flex items-center gap-1 text-star">★ {repo.stargazers_count}</span>
+        <span>⑂ {repo.forks_count}</span>
+        <span>updated {updatedDate}</span>
       </div>
 
       {repo.topics.length > 0 && (
-        <div className="topics">
+        <div className="mt-3 flex flex-wrap gap-2">
           {repo.topics.map((topic) => (
-            <span key={topic} className="topic-tag">
+            <span
+              key={topic}
+              className="font-mono text-xs text-muted border border-white/10 px-2 py-0.5"
+            >
               {topic}
             </span>
           ))}

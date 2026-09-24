@@ -9,7 +9,9 @@ interface UserSearchResultsProps {
 function UserSearchResults({ results, onSelect }: UserSearchResultsProps) {
   const navigate = useNavigate();
 
-  if (results.length === 0) return <p>No users found.</p>;
+  if (results.length === 0) {
+    return <p className="font-mono text-sm text-muted">no users found</p>;
+  }
 
   function handleClick(username: string) {
     onSelect(username);
@@ -17,18 +19,24 @@ function UserSearchResults({ results, onSelect }: UserSearchResultsProps) {
   }
 
   return (
-    <div className="search-results-grid">
+    <ul className="flex flex-col divide-y divide-white/5">
       {results.map((user) => (
-        <button
-          key={user.id}
-          onClick={() => handleClick(user.login)}
-          className="search-result-card"
-        >
-          <img src={user.avatar_url} alt={`${user.login}'s avatar`} width={60} />
-          <span>{user.login}</span>
-        </button>
+        <li key={user.id}>
+          <button
+            onClick={() => handleClick(user.login)}
+            className="w-full flex items-center gap-3 py-3 text-left hover:bg-white/[0.03] transition-colors"
+          >
+            <img
+              src={user.avatar_url}
+              alt={`${user.login}'s avatar`}
+              className="w-8 h-8 shrink-0"
+            />
+            <span className="font-mono text-fg">{user.login}</span>
+            
+          </button>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 

@@ -31,12 +31,12 @@ function RepoList({ repos, username }: RepoListProps) {
 
   return (
     <div>
-      <div className="repo-controls">
+      <div className="flex items-center gap-4 mb-4 font-mono text-sm">
         <SortSelect value={sortBy} onChange={setSortBy} />
         <LanguageFilter languages={languages} value={language} onChange={setLanguage} />
       </div>
 
-      <div className="repo-grid">
+      <div className="flex flex-col gap-3">
         {filteredAndSorted.map((repo) => (
           <RepoCard key={repo.id} repo={repo} username={username} />
         ))}

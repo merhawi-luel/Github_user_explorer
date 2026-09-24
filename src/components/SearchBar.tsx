@@ -19,7 +19,6 @@ function SearchBar({ onQueryChange }: SearchBarProps) {
 
   return (
     <div className="flex items-center gap-2 border border-white/10 px-4 py-3 focus-within:border-accent transition-colors">
-      <span className="font-mono text-accent text-lg">{">"}</span>
       <input
         type="text"
         value={input}
