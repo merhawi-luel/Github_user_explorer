@@ -1,38 +1,34 @@
-// src/components/SearchBar.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDebounce } from "../hooks/useDebounce";
 
 interface SearchBarProps {
-  onSearch: (username: string) => void;
-  loading?: boolean;
+  onQueryChange: (query: string) => void;
 }
 
-function SearchBar({ onSearch, loading = false }: SearchBarProps) {
+function SearchBar({ onQueryChange }: SearchBarProps) {
   const [input, setInput] = useState<string>("");
+  const debouncedInput = useDebounce(input, 400);
+
+  useEffect(() => {
+    onQueryChange(debouncedInput);
+  }, [debouncedInput, onQueryChange]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value);
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const trimmed = input.trim();
-    if (!trimmed) return;
-    onSearch(trimmed);
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="flex items-center gap-2 border border-white/10 px-4 py-3 focus-within:border-accent transition-colors">
+      <span className="font-mono text-accent text-lg">{">"}</span>
       <input
         type="text"
         value={input}
         onChange={handleChange}
-        placeholder="Search GitHub username..."
-        disabled={loading}
+        placeholder="search a username"
+        autoFocus
+        className="flex-1 bg-transparent font-mono text-fg placeholder:text-muted outline-none text-lg"
       />
-      <button type="submit" disabled={loading || !input.trim()}>
-        {loading ? "Searching..." : "Search"}
-      </button>
-    </form>
+    </div>
   );
 }
 

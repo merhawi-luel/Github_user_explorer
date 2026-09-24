@@ -1,21 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDebounce } from "../hooks/useDebounce";
 import { useGitHubUserSearch } from "../hooks/useGitHubUserSearch";
 import { useSearchHistory } from "../hooks/useSearchHistory";
+import SearchBar from "../components/SearchBar";
 import UserSearchResults from "../components/UserSearchResults";
 import SearchHistory from "../components/SearchHistory";
 
 function SearchPage() {
-  const [input, setInput] = useState<string>("");
-  const debouncedInput = useDebounce(input, 400);
-  const { data: results, loading, error } = useGitHubUserSearch(debouncedInput);
+  const [query, setQuery] = useState<string>("");
+  const { data: results, loading, error } = useGitHubUserSearch(query);
   const { history, addSearch, clearHistory } = useSearchHistory();
   const navigate = useNavigate();
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setInput(e.target.value);
-  }
 
   function handleSelect(username: string) {
     addSearch(username);
@@ -23,23 +18,24 @@ function SearchPage() {
   }
 
   return (
-    <div className="search-page">
-      <h1>GitHub User Explorer</h1>
+    <div className="min-h-screen bg-bg font-sans px-6 py-16">
+      <div className="mx-auto max-w-xl">
+        <h1 className="font-mono text-sm text-muted tracking-tight mb-8">
+          github-user-explorer
+        </h1>
 
-      <input
-        type="text"
-        value={input}
-        onChange={handleChange}
-        placeholder="Search GitHub username..."
-      />
+        <SearchBar onQueryChange={setQuery} />
 
-      {loading && <p>Searching...</p>}
-      {error && <p>{error}</p>}
-      {results && <UserSearchResults results={results} onSelect={handleSelect} />}
+        <div className="mt-6">
+          {loading && <p className="font-mono text-sm text-muted">searching...</p>}
+          {error && <p className="font-mono text-sm text-accent">{error}</p>}
+          {results && <UserSearchResults results={results} onSelect={handleSelect} />}
 
-      {!debouncedInput && (
-        <SearchHistory history={history} onSelect={handleSelect} onClear={clearHistory} />
-      )}
+          {!query && (
+            <SearchHistory history={history} onSelect={handleSelect} onClear={clearHistory} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
